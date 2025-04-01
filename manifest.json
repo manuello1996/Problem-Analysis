@@ -1,0 +1,16 @@
+{
+    "manifest_version": 2.0,
+    "id": "analysisproblem",
+    "name": "Analysis Problem",
+    "version": "1.0",
+    "namespace": "AnalysisProblem",
+    "author": "Monzphere",
+    "actions": {
+        "analistproblem.list": {
+            "class": "AnalistProblem"
+        }
+    },
+    "assets": {
+        "js": ["class.analist.problem.js"]
+    }
+} 
