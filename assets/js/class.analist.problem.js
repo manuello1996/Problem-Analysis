@@ -354,7 +354,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     .analist-problem-ack-message {
                         white-space: pre-wrap;
                         padding: 8px;
-                        background: #f8f8f8;
                         border-radius: 4px;
                         margin-top: 5px;
                     }
