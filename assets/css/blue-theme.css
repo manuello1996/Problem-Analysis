@@ -1,0 +1,623 @@
+/* Estilos para o botão LTS */
+.analist-lts-btn {
+    margin-left: 5px;
+    padding: 2px 6px;
+    font-size: 11px;
+    background: #0275d8;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.analist-lts-btn:hover {
+    background: #025aa5;
+    color: white;
+}
+
+.analist-lts-btn:active {
+    background: #014682;
+}
+
+/* Estilo para o modal quando aparecer */
+.modal-popup-large {
+    min-width: 1000px;
+    min-height: 600px;
+    max-width: 95vw;
+    overflow-x: hidden;
+}
+
+/* Prevent horizontal scroll in modal content */
+.modal-popup-large .event-details-popup {
+    max-width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+}
+
+.modal-popup-large .analisthost-container {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .analist-lts-btn {
+        font-size: 10px;
+        padding: 1px 4px;
+    }
+}
+
+/* AnalistHost styles - adapted from ProblemKanban */
+.analisthost-container {
+    font-family: "Segoe UI", Tahoma, Arial, Helvetica, sans-serif;
+    line-height: 1.4;
+    background: transparent;
+    padding: 0;
+    border: none;
+    max-width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+}
+
+/* AnalistHost header section - compacto com linha separadora */
+.analisthost-sections-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+
+/* New reorganized layout styles */
+.analisthost-sections-reorganized {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* Row layouts for different types of information */
+.analisthost-row {
+    display: flex;
+    width: 100%;
+    gap: 12px;
+}
+
+/* Primary sections - full width */
+.analisthost-row-primary {
+    flex-direction: column;
+}
+
+/* Info rows - side by side layout */
+.analisthost-row-info-primary,
+.analisthost-row-info-secondary {
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.analisthost-row-info-primary > .analisthost-section,
+.analisthost-row-info-secondary > .analisthost-section {
+    flex: 1;
+    min-width: 200px;
+    max-width: calc(50% - 4px);
+}
+
+/* Specific sizing for availability section to be more compact */
+.analisthost-row-info-primary > .section-availability {
+    min-width: 150px;
+    flex: 0 0 auto;
+    max-width: 200px;
+}
+
+/* Monitoring section gets more space when paired with availability */
+.analisthost-row-info-primary > .section-monitoring {
+    flex: 1 1 auto;
+    min-width: 250px;
+}
+
+/* Tags row - focused layout */
+.analisthost-row-tags {
+    flex-direction: column;
+}
+
+.analisthost-row-tags > .analisthost-section {
+    width: 100%;
+}
+
+/* Secondary grid - templates and inventory */
+.analisthost-row-secondary-grid {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.analisthost-row-secondary-grid > .analisthost-section {
+    flex: 1;
+    min-width: 300px;
+    max-width: calc(50% - 4px);
+}
+
+/* Individual section improvements */
+.analisthost-section {
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+
+
+.analisthost-section-name {
+    font-weight: 600;
+    font-size: 13px;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+
+.analisthost-section-body {
+    font-size: 12px;
+    line-height: 1.4;
+    overflow: hidden;
+    word-wrap: break-word;
+}
+
+/* Availability section specific styles */
+.section-availability .analisthost-section-body {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.interface-indicators {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    align-items: center;
+    max-width: 100%;
+}
+
+.interface-indicator {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    min-width: 35px;
+    white-space: nowrap;
+    cursor: help;
+}
+
+/* Status color classes for interface indicators */
+.status-green {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.status-red {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.status-yellow {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+}
+
+.status-grey {
+    background-color: #e2e3e5;
+    color: #6c757d;
+    border: 1px solid #d1ecf1;
+}
+
+
+
+/* Services tab styles */
+.services-container {
+    padding: 15px;
+    margin: 10px 0;
+}
+
+
+.services-summary-header {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #ffffff;
+    border-radius: 6px;
+    border-left: 4px solid #007cba;
+}
+
+
+
+.services-summary-header h4 {
+    margin: 0 0 5px 0;
+    color: #333;
+}
+
+
+
+.services-summary-header p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+}
+
+
+.services-hierarchy-path {
+    margin: 15px 0;
+    padding: 10px;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+
+
+.hierarchy-label {
+    font-weight: bold;
+    color: #666;
+    margin-right: 10px;
+}
+
+
+.hierarchy-arrow {
+    color: #999;
+    margin: 0 5px;
+}
+
+
+
+.hierarchy-service {
+    color: #007cba;
+    cursor: pointer;
+}
+
+.hierarchy-service:hover {
+    text-decoration: underline;
+}
+
+
+.services-no-results {
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+}
+
+
+
+.services-no-results ul {
+    text-align: left;
+    display: inline-block;
+}
+
+.service-card {
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 10px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.service-card-impacted {
+    border-left: 4px solid #e74c3c;
+}
+
+
+
+.service-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.service-name {
+    font-weight: bold;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.service-name-link {
+    color: #007cba;
+    cursor: pointer;
+}
+
+.service-name-link:hover {
+    text-decoration: underline;
+}
+
+
+
+.impacted-badge {
+    background: #e74c3c;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+
+.service-status {
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.service-status.status-ok {
+    background: #27ae60;
+    color: white;
+}
+
+.service-status.status-average {
+    background: #f39c12;
+    color: white;
+}
+
+.service-status.status-warning {
+    background: #e67e22;
+    color: white;
+}
+
+.service-status.status-high {
+    background: #e74c3c;
+    color: white;
+}
+
+.service-status.status-disaster {
+    background: #8e44ad;
+    color: white;
+}
+
+/* SLA Information styles */
+.service-sla-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    margin: 15px 0;
+    padding: 15px;
+}
+
+
+
+.sla-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+}
+
+.sla-label {
+    font-weight: 500;
+    color: #666;
+    margin-right: 8px;
+}
+
+
+.sla-value {
+    font-weight: bold;
+    color: #333;
+}
+
+
+
+.sla-value-success {
+    color: #27ae60 !important;
+}
+
+
+.sla-value-error {
+    color: #e74c3c !important;
+}
+
+
+
+.service-no-sla {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    margin: 15px 0;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+}
+
+
+
+/* Responsive adjustments for services */
+@media (max-width: 768px) {
+    .service-sla-info {
+        grid-template-columns: 1fr;
+        padding: 12px;
+    }
+    
+    .service-header {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+    }
+    
+    .service-name {
+        font-size: 14px;
+    }
+}
+
+/* Header section improvements */
+.analisthost-sections-header .host-header-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.analisthost-sections-header .host-name-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.analisthost-sections-header .problems-container {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+.analisthost-sections-header .host-name {
+    font-weight: 600;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Responsive layout adjustments */
+@media (max-width: 768px) {
+
+    
+    .analisthost-row-info-primary > .analisthost-section,
+    .analisthost-row-info-secondary > .analisthost-section,
+    .analisthost-row-secondary-grid > .analisthost-section {
+        max-width: 100%;
+        min-width: auto;
+    }
+    
+    .analisthost-row {
+        gap: 8px;
+    }
+    
+    .analisthost-sections-reorganized {
+        gap: 8px;
+    }
+    
+    .analisthost-sections-header .host-header-main {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+    }
+    
+    .analisthost-sections-header .problems-container {
+        margin-left: 0;
+        width: 100%;
+        justify-content: flex-start;
+    }
+    
+    .analisthost-sections-header .host-name-container {
+        font-size: 14px;
+        gap: 8px;
+    }
+    
+    .analisthost-sections-header {
+        padding: 10px 12px;
+    }
+    
+    /* Availability section responsive adjustments */
+    .analisthost-row-info-primary > .section-availability {
+        min-width: 120px;
+        max-width: 100%;
+    }
+    
+    .analisthost-row-info-primary > .section-monitoring {
+        min-width: 200px;
+    }
+    
+    .interface-indicator {
+        font-size: 10px;
+        padding: 3px 6px;
+        min-width: 30px;
+    }
+}
+
+/* Maintain compatibility with existing styles */
+.analisthost-sections-optimized {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 0;
+}
+
+/* Estilos para a nova coluna LTS */
+.lts-header {
+    width: 60px !important;
+    text-align: center !important;
+    font-weight: bold !important;
+    font-size: 12px !important;
+    background: #f8f9fa !important;
+    padding: 8px 4px !important;
+}
+
+
+
+[theme='blue-theme'] .lts-header {
+    background: #ffffff !important;
+    color: #000000 !important;
+}
+
+/* Botões LTS na tabela */
+.js-lts-button,
+.js-lts-button-widget {
+    font-size: 11px !important;
+    background: #0275d8 !important;
+    color: white !important;
+    border: none !important;
+    cursor: pointer !important;
+    white-space: nowrap !important;
+    transition: background-color 0.2s ease !important;
+}
+
+.js-lts-button:hover,
+.js-lts-button-widget:hover {
+    background: #025aa5 !important;
+    color: white !important;
+}
+
+.js-lts-button:active,
+.js-lts-button-widget:active {
+    background: #014682 !important;
+}
+
+/* Células da coluna LTS */
+.lts-column-cell,
+td:has(.js-lts-button),
+td:has(.js-lts-button-widget) {
+    width: 60px !important;
+    text-align: center !important;
+    padding: 4px !important;
+    vertical-align: middle !important;
+}
+
+/* Responsividade para telas pequenas */
+@media (max-width: 768px) {
+    .lts-header {
+        width: 50px !important;
+        font-size: 10px !important;
+    }
+
+    
+    .lts-column-cell,
+    td:has(.js-lts-button),
+    td:has(.js-lts-button-widget) {
+        width: 50px !important;
+    }
+}
+
