@@ -1,5 +1,9 @@
 # **Zabbix Problem Analysis Module**
 
+## This module was developed from version 7.0x.
+## However, with some adjustments, it may be functional in other versions that support module deployment.
+## To test in versions 6.0x, you need to change the manifest_version to 1.0.
+
 This module provides a historical analysis of specific problems in Zabbix, offering a comparative report between the current and previous months. It helps users monitor issue trends and resolution efficiency.
 
 <img width="1377" height="574" alt="image" src="https://github.com/user-attachments/assets/253ba616-05b3-4e9e-b693-ea513cae8a4c" />
