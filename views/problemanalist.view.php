@@ -1709,7 +1709,7 @@ function makeAnalistHostSectionMonitoredBy(array $host): CDiv {
             $proxy_group->setTitle($host['proxy_group']['name']);
 
             $monitored_by = [
-                new CIcon(ZBX_ICON_PROXY_GROUP, _('Proxy group')),
+                new CIcon('zi-proxy', _('Proxy group')),
                 $proxy_group
             ];
     }
