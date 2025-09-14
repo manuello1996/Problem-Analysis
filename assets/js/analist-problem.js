@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     return form;
                 }
             }
-            
+
             const tokenInput = document.querySelector(`input[name="${this.CSRF_TOKEN_NAME}"]`);
             if (tokenInput) {
                 return tokenInput.closest('form') || document.forms[0];
@@ -24,12 +24,12 @@ document.addEventListener('DOMContentLoaded', () => {
         init() {
             // Adiciona o botão inicialmente
             this.addLTSButton();
-            
+
             // Observer para mudanças no DOM
             const observer = new MutationObserver((mutations) => {
                 mutations.forEach((mutation) => {
                     // Verifica se há mudanças relevantes para o botão LTS
-                    if (mutation.target.classList && 
+                    if (mutation.target.classList &&
                         (mutation.target.classList.contains('flickerfreescreen') ||
                          mutation.target.classList.contains('list-table') ||
                          mutation.target.classList.contains('dashboard-grid-widget-contents') ||
@@ -46,14 +46,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const dashboardObserver = new MutationObserver((mutations) => {
                 let shouldUpdate = false;
                 mutations.forEach((mutation) => {
-                    if (mutation.target.classList && 
+                    if (mutation.target.classList &&
                         (mutation.target.classList.contains('dashboard-grid-widget-contents') ||
                          mutation.target.classList.contains('dashboard-widget-problems') ||
                          mutation.target.closest('.dashboard-grid-widget-contents'))) {
                         shouldUpdate = true;
                     }
                 });
-                
+
                 if (shouldUpdate) {
                     setTimeout(() => {
                         this.addLTSButtonToDashboardWidgets();
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
         addLTSButton() {
             // Adiciona botões na lista principal de problemas
             this.addLTSButtonToMainTable();
-            
+
             // Adiciona botões nos widgets da dashboard
             this.addLTSButtonToDashboardWidgets();
         }
@@ -118,19 +118,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (headerRow && !headerRow.querySelector('.lts-header')) {
                     const ltsHeader = document.createElement('th');
                     ltsHeader.className = 'lts-header';
-                    ltsHeader.textContent = 'MonZGuru';
+                    ltsHeader.textContent = 'Details';
                     headerRow.appendChild(ltsHeader);
                 }
 
                 const rows = tbody.querySelectorAll('tr:not(.timeline-axis):not(.timeline-td)');
                 rows.forEach(row => {
                     // Verifica se a linha não é uma linha de tempo e se já tem botão LTS
-                    if (row.querySelector('.js-lts-button') || 
+                    if (row.querySelector('.js-lts-button') ||
                         !row.querySelector('.problem-expand-td')) return;
 
                     // Extrai dados usando data-menu-popup (mais confiável)
                     const problemData = this.extractProblemDataFromMenuPopup(row);
-                    
+
                     if (problemData && problemData.eventid) {
                         this.addLTSColumnToRow(row, problemData);
                     }
@@ -147,9 +147,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 '[class*="dashboard"][class*="widget"][class*="problem"] table.list-table',
                 '.dashboard-grid-widget table.list-table'
             ];
-            
+
             const problemWidgets = new Set();
-            
+
             selectors.forEach(selector => {
                 document.querySelectorAll(selector).forEach(element => {
                     if (element.tagName === 'TABLE') {
@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
             });
-            
+
             problemWidgets.forEach(widget => {
                 const problemTable = widget.querySelector('table.list-table') || (widget.tagName === 'TABLE' ? widget : null);
                 if (!problemTable) return;
@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (headerRow && !headerRow.querySelector('.lts-header')) {
                     const ltsHeader = document.createElement('th');
                     ltsHeader.className = 'lts-header';
-                    ltsHeader.textContent = 'MonZGuru';
+                    ltsHeader.textContent = 'Details';
                     headerRow.appendChild(ltsHeader);
                 }
 
@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     // Extrai dados usando data-menu-popup
                     const problemData = this.extractProblemDataFromMenuPopup(row);
-                    
+
                     if (problemData && problemData.eventid) {
                         this.addLTSColumnToRow(row, problemData, true);
                     }
@@ -314,7 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!hostLink) {
                     hostLink = row.querySelector('a[href*="hostids"]');
                 }
-                
+
                 if (hostLink) {
                     const hostMatch = hostLink.href.match(/(?:hostids?|filter_hostids).*?(\d+)/);
                     if (hostMatch) {
@@ -322,7 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     hostname = hostLink.textContent.trim();
                 }
-                
+
                 // 2. Se não encontrou, procura na coluna Host (geralmente 4ª ou 5ª coluna)
                 if (!hostid || !hostname) {
                     const hostCells = row.querySelectorAll('td');
@@ -339,7 +339,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     }
                 }
-                
+
                 // 3. Se ainda não encontrou, tenta por data attributes ou outros padrões
                 if (!hostid) {
                     // Procura por data-hostid no row ou elementos filhos
@@ -348,7 +348,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         hostid = elementWithHostid.getAttribute('data-hostid');
                     }
                 }
-                
+
                 // 4. Se ainda não tem hostname, procura por texto que pode ser hostname
                 if (!hostname && hostid) {
                     // Procura na célula que contém informações do host
@@ -414,7 +414,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const button = document.createElement('button');
             button.className = isWidget ? 'btn-alt js-lts-button-widget' : 'btn-alt js-lts-button';
             button.innerHTML = 'Details';
-            button.title = `Análise LTS: ${problemData.hostname} - ${problemData.problemName}`;
+            button.title = `Detail for: ${problemData.hostname} - ${problemData.problemName}`;
 
             // Cria a nova célula da tabela
             const td = document.createElement('td');
@@ -441,7 +441,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const button = document.createElement('button');
             button.className = 'analist-lts-btn btn-link';
             button.innerHTML = 'LTS';
-            button.title = 'Análise LTS do Problema';
+            button.title = 'Problem analysis';
 
             // Adiciona evento de click
             button.addEventListener('click', (e) => {
@@ -456,7 +456,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         openLTSModal(problemData) {
             console.log('AnalistProblem - Abrindo modal com dados:', problemData);
-            
+
             const params = new URLSearchParams({
                 eventid: problemData.eventid,
                 ...(problemData.triggerid && { triggerid: problemData.triggerid }),
@@ -486,7 +486,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (this.form && this.form[this.CSRF_TOKEN_NAME]) {
                 return this.form[this.CSRF_TOKEN_NAME].value;
             }
-            
+
             const tokenInput = document.querySelector(`input[name="${this.CSRF_TOKEN_NAME}"]`);
             return tokenInput ? tokenInput.value : '';
         }

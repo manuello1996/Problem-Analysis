@@ -56,7 +56,7 @@ class CControllerAnalistProblemPopup extends CController {
         $eventid = $this->getInput('eventid');
         $triggerid = $this->getInput('triggerid', 0);
         $hostid = $this->getInput('hostid', 0);
-        
+
 
 
         // Get event details
@@ -67,7 +67,7 @@ class CControllerAnalistProblemPopup extends CController {
         ]);
 
         $event = $events ? $events[0] : [];
-        
+
         // If no event found, create a minimal event object to prevent errors
         if (!$event) {
             $event = [
@@ -86,12 +86,12 @@ class CControllerAnalistProblemPopup extends CController {
         // Get trigger details - primeiro tenta com triggerid passado, senão extrai do evento
         $trigger = null;
         $actual_triggerid = $triggerid;
-        
+
         // Se não temos triggerid, tenta extrair do evento
         if (!$actual_triggerid && $event && isset($event['objectid'])) {
             $actual_triggerid = $event['objectid'];
         }
-        
+
         if ($actual_triggerid > 0) {
             $triggers = API::Trigger()->get([
                 'output' => ['triggerid', 'description', 'expression', 'comments', 'priority'],
@@ -101,39 +101,39 @@ class CControllerAnalistProblemPopup extends CController {
                 'expandExpression' => true
             ]);
             $trigger = $triggers ? $triggers[0] : null;
-            
-            
-            
-            
+
+
+
+
             if ($trigger) {
-                
-                
-                
+
+
+
                 if (isset($trigger['items'])) {
-                    
+
                 } else {
-                    
+
                 }
             } else {
-                
+
             }
         }
 
         // Get host details with comprehensive data for hostcard
         $host = null;
         $actual_hostid = $hostid;
-        
+
         // Se não temos hostid, tenta extrair do trigger
         if (!$actual_hostid && $trigger && isset($trigger['hosts']) && !empty($trigger['hosts'])) {
             $actual_hostid = $trigger['hosts'][0]['hostid'];
-            
+
         }
-        
+
         if ($actual_hostid > 0) {
             $host = $this->getHostCardData($actual_hostid);
-            
+
         } else {
-            
+
         }
 
         // Get related events for timeline
@@ -142,19 +142,19 @@ class CControllerAnalistProblemPopup extends CController {
             $related_events = API::Event()->get([
                 'output' => ['eventid', 'clock', 'value', 'acknowledged', 'name', 'severity'],
                 'source' => 0, // EVENT_SOURCE_TRIGGERS
-                'object' => 0, // EVENT_OBJECT_TRIGGER  
+                'object' => 0, // EVENT_OBJECT_TRIGGER
                 'objectids' => $actual_triggerid,
                 'sortfield' => 'clock',
                 'sortorder' => 'DESC',
                 'limit' => 15
             ]);
-            
+
             // Fix severity for resolution events
             // Resolution events (value = 0) should use the severity from the trigger or original problem
             $trigger_severity = $trigger && isset($trigger['priority']) ? (int) $trigger['priority'] : 0;
             $main_event_severity = isset($event['severity']) ? (int) $event['severity'] : 0;
             $last_problem_severity = 0;
-            
+
             // Process events in chronological order to track problem severity
             $events_chronological = array_reverse($related_events);
             foreach ($events_chronological as &$rel_event) {
@@ -163,26 +163,26 @@ class CControllerAnalistProblemPopup extends CController {
                     $last_problem_severity = (int) $rel_event['severity'];
                 } else {
                     // This is a resolution event, use the last problem severity, main event severity, or trigger severity
-                    $resolution_severity = $last_problem_severity > 0 ? $last_problem_severity : 
+                    $resolution_severity = $last_problem_severity > 0 ? $last_problem_severity :
                                          ($main_event_severity > 0 ? $main_event_severity : $trigger_severity);
                     $rel_event['severity'] = $resolution_severity;
                 }
             }
             unset($rel_event);
-            
+
             // Restore original order (DESC)
             $related_events = array_reverse($events_chronological);
         }
 
         // Get items for graphs - usar itemids do selectItems diretamente
         $items = [];
-        
+
         if ($trigger && $actual_triggerid > 0) {
             if (isset($trigger['items']) && !empty($trigger['items'])) {
                 // Get itemids from selectItems and ensure uniqueness
                 $trigger_itemids = array_column($trigger['items'], 'itemid');
                 $unique_itemids = array_unique($trigger_itemids);
-                
+
                 // Get items and ensure no duplicates by using itemid as key
                 $raw_items = API::Item()->get([
                     'output' => ['itemid', 'name', 'key_', 'hostid', 'value_type'],
@@ -192,83 +192,83 @@ class CControllerAnalistProblemPopup extends CController {
                         'value_type' => [ITEM_VALUE_TYPE_FLOAT, ITEM_VALUE_TYPE_UINT64] // Only numeric items for graphs
                     ]
                 ]);
-                
+
                 // Use itemid as key to prevent any potential duplicates
                 $items_by_id = [];
                 foreach ($raw_items as $item) {
                     $items_by_id[$item['itemid']] = $item;
                 }
-                
+
                 // Convert back to indexed array
                 $items = array_values($items_by_id);
             }
         }
 
-        // Get monthly comparison data
+        // Get monthly comparison data (last 6 months)
         $monthly_comparison = [];
+
         if ($actual_triggerid > 0 && isset($event['clock'])) {
-            $event_timestamp = $event['clock'];
-            
-            // Calculate current month and previous month periods
-            $current_month_start = mktime(0, 0, 0, date('n', $event_timestamp), 1, date('Y', $event_timestamp));
-            $current_month_end = mktime(23, 59, 59, date('n', $event_timestamp), date('t', $event_timestamp), date('Y', $event_timestamp));
-            
-            $prev_month_start = mktime(0, 0, 0, date('n', $event_timestamp) - 1, 1, date('Y', $event_timestamp));
-            $prev_month_end = mktime(23, 59, 59, date('n', $event_timestamp) - 1, date('t', $prev_month_start), date('Y', $prev_month_start));
-            
-            // Handle year transition
-            if (date('n', $event_timestamp) == 1) {
-                $prev_month_start = mktime(0, 0, 0, 12, 1, date('Y', $event_timestamp) - 1);
-                $prev_month_end = mktime(23, 59, 59, 12, 31, date('Y', $event_timestamp) - 1);
+            $event_timestamp = (int)$event['clock'];
+
+            // Base at the first day of the event's month 00:00:00
+            $base_month_start = strtotime(date('Y-m-01 00:00:00', $event_timestamp));
+
+            $months = [];
+
+            // Build last 6 months: 0 = current month, 1..5 = back in time
+            for ($i = 0; $i < 6; $i++) {
+                $start = strtotime("-{$i} month", $base_month_start);
+                // Month end = last day of that month 23:59:59
+                $end = mktime(23, 59, 59, (int)date('n', $start), (int)date('t', $start), (int)date('Y', $start));
+
+                // Fetch problem events for this month
+                $events = API::Event()->get([
+                    'output'    => ['eventid', 'clock', 'value', 'severity'],
+                    'source'    => 0,
+                    'object'    => 0,
+                    'objectids' => $actual_triggerid,
+                    'time_from' => $start,
+                    'time_till' => $end,
+                    'value'     => 1 // Only problem events
+                ]);
+
+                $months[$i] = [
+                    'name'   => date('F Y', $start),
+                    'count'  => count($events),
+                    'events' => $events,
+                    'start'  => $start,
+                    'end'    => $end
+                ];
             }
-            
-            // Get events for current month
-            $current_month_events = API::Event()->get([
-                'output' => ['eventid', 'clock', 'value', 'severity'],
-                'source' => 0,
-                'object' => 0,
-                'objectids' => $actual_triggerid,
-                'time_from' => $current_month_start,
-                'time_till' => $current_month_end,
-                'value' => 1 // Only problem events
-            ]);
-            
-            // Get events for previous month
-            $prev_month_events = API::Event()->get([
-                'output' => ['eventid', 'clock', 'value', 'severity'],
-                'source' => 0,
-                'object' => 0,
-                'objectids' => $actual_triggerid,
-                'time_from' => $prev_month_start,
-                'time_till' => $prev_month_end,
-                'value' => 1 // Only problem events
-            ]);
-            
+
+            // Add month-over-month percentage change for each entry where we have a previous month
+            for ($i = 0; $i < 6; $i++) {
+                if (!isset($months[$i + 1])) {
+                    $months[$i]['change_percentage'] = null; // no previous to compare to
+                    continue;
+                }
+
+                $prev = (int)$months[$i + 1]['count'];
+                $cur  = (int)$months[$i]['count'];
+
+                if ($prev > 0) {
+                    $months[$i]['change_percentage'] = round((($cur - $prev) / $prev) * 100, 1);
+                } else {
+                    $months[$i]['change_percentage'] = ($cur > 0) ? 100.0 : 0.0;
+                }
+            }
+
             $monthly_comparison = [
-                'current_month' => [
-                    'name' => date('F Y', $event_timestamp),
-                    'count' => count($current_month_events),
-                    'events' => $current_month_events,
-                    'start' => $current_month_start,
-                    'end' => $current_month_end
-                ],
-                'previous_month' => [
-                    'name' => date('F Y', $prev_month_start),
-                    'count' => count($prev_month_events),
-                    'events' => $prev_month_events,
-                    'start' => $prev_month_start,
-                    'end' => $prev_month_end
-                ]
+                'months' => $months,
+
+                // Backward compatibility (your current view code uses these)
+                'current_month'    => $months[0],
+                'previous_month'   => $months[1] ?? ['name' => '', 'count' => 0, 'events' => [], 'start' => null, 'end' => null],
+                'change_percentage'=> $months[0]['change_percentage'] ?? 0
             ];
-            
-            // Calculate percentage change
-            if ($monthly_comparison['previous_month']['count'] > 0) {
-                $change = (($monthly_comparison['current_month']['count'] - $monthly_comparison['previous_month']['count']) / $monthly_comparison['previous_month']['count']) * 100;
-                $monthly_comparison['change_percentage'] = round($change, 1);
-            } else {
-                $monthly_comparison['change_percentage'] = $monthly_comparison['current_month']['count'] > 0 ? 100 : 0;
-            }
         }
+        // Get monthly comparison data
+
 
         // Get system metrics at event time (only for Zabbix Agent hosts)
         $system_metrics = [];
@@ -496,35 +496,35 @@ class CControllerAnalistProblemPopup extends CController {
     private function getSystemMetricsAtEventTime($host, $event_timestamp) {
         $hostid = $host['hostid'];
         $interfaces = $host['interfaces'] ?? [];
-        
+
         // Determine monitoring type based on main interface
         $monitoring_type = $this->getHostMonitoringType($interfaces);
-        
+
         $metrics = [
             'type' => $monitoring_type,
             'available' => false,
             'categories' => []
         ];
-        
+
         // Only proceed if we have Zabbix Agent
         if ($monitoring_type !== 'agent') {
             return $metrics;
         }
-        
+
         try {
             // Get essential system metrics for Zabbix Agent (using lastvalue)
             $metrics_list = $this->getEssentialSystemMetrics($hostid);
             $metrics['categories'] = $metrics_list;
-            
+
             $metrics['available'] = !empty($metrics_list);
-            
+
         } catch (Exception $e) {
             error_log('Error getting system metrics: ' . $e->getMessage());
         }
-        
+
         return $metrics;
     }
-    
+
     /**
      * Determine monitoring type based on host interfaces
      */
@@ -532,7 +532,7 @@ class CControllerAnalistProblemPopup extends CController {
         if (empty($interfaces)) {
             return 'unknown';
         }
-        
+
         // Find main interface
         foreach ($interfaces as $interface) {
             if ($interface['main'] == 1) {
@@ -545,28 +545,29 @@ class CControllerAnalistProblemPopup extends CController {
                 }
             }
         }
-        
+
         return 'unknown';
     }
-    
+
     /**
      * Get essential system metrics for Zabbix Agent: CPU, Memory, Load, Disk /
      */
     private function getEssentialSystemMetrics($hostid) {
         $metrics = [];
-        
+
         // Define flexible patterns for different Zabbix versions
         $metric_patterns = [
             'CPU' => ['system.cpu.util', 'system.cpu.utilization'],
             'Memory' => ['vm.memory.util', 'vm.memory.size[available]', 'vm.memory.size[total]'],
             'Load' => ['system.cpu.load[percpu,avg1]', 'system.cpu.load[,avg5]', 'system.cpu.load'],
-            'Disk' => ['vfs.fs.size[/,pused]', 'vfs.fs.used[/]', 'vfs.fs.size[/,used]']
+            'Root file system' => ['vfs.fs.dependent.size[/,pused]'],
+            'Uptime' => ['system.uptime', 'system.hw.uptime[hrSystemUptime.0]']
         ];
-        
+
         // Search for each category using multiple patterns
         foreach ($metric_patterns as $category => $patterns) {
             $found_item = null;
-            
+
             foreach ($patterns as $pattern) {
                 $items = API::Item()->get([
                     'output' => ['itemid', 'name', 'key_', 'units', 'lastvalue', 'lastclock'],
@@ -578,13 +579,13 @@ class CControllerAnalistProblemPopup extends CController {
                     ],
                     'limit' => 1
                 ]);
-                
+
                 if (!empty($items)) {
                     $found_item = $items[0];
                     break; // Use first matching pattern
                 }
             }
-            
+
             if ($found_item) {
                 // Simply get the last value from the item
                 $metric_data = [
@@ -594,11 +595,11 @@ class CControllerAnalistProblemPopup extends CController {
                     'category' => $category,
                     'last_value' => $found_item['lastvalue'] ?? 'N/A'
                 ];
-                
+
                 $metrics[] = $metric_data;
             }
         }
-        
+
         return $metrics;
     }
 }

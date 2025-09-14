@@ -1,3 +1,33 @@
+/* ISC-EJPD Custom */
+
+.monitoring-item-span {
+    margin-left: 10px !important;
+    display: initial !important;
+}
+
+.host-group {
+    display: block !important;
+}
+
+.template-name {
+    display: block !important;
+}
+
+.chart-title {
+    display: grid !important;
+    font-weight: bold;
+    font-size: larger;
+}
+
+.chart-title strong {
+    display: grid !important;
+}
+
+.chart-items-list ul {
+    list-style: disclosure-closed;
+    margin-left: 20px;
+}
+
 /* Estilos para o botão LTS */
 .analist-lts-btn {
     margin-left: 5px;
@@ -449,13 +479,13 @@
         grid-template-columns: 1fr;
         padding: 12px;
     }
-    
+
     .service-header {
         flex-direction: column;
         gap: 8px;
         align-items: flex-start;
     }
-    
+
     .service-name {
         font-size: 14px;
     }
@@ -494,53 +524,53 @@
 /* Responsive layout adjustments */
 @media (max-width: 768px) {
 
-    
+
     .analisthost-row-info-primary > .analisthost-section,
     .analisthost-row-info-secondary > .analisthost-section,
     .analisthost-row-secondary-grid > .analisthost-section {
         max-width: 100%;
         min-width: auto;
     }
-    
+
     .analisthost-row {
         gap: 8px;
     }
-    
+
     .analisthost-sections-reorganized {
         gap: 8px;
     }
-    
+
     .analisthost-sections-header .host-header-main {
         flex-direction: column;
         gap: 8px;
         align-items: flex-start;
     }
-    
+
     .analisthost-sections-header .problems-container {
         margin-left: 0;
         width: 100%;
         justify-content: flex-start;
     }
-    
+
     .analisthost-sections-header .host-name-container {
         font-size: 14px;
         gap: 8px;
     }
-    
+
     .analisthost-sections-header {
         padding: 10px 12px;
     }
-    
+
     /* Availability section responsive adjustments */
     .analisthost-row-info-primary > .section-availability {
         min-width: 120px;
         max-width: 100%;
     }
-    
+
     .analisthost-row-info-primary > .section-monitoring {
         min-width: 200px;
     }
-    
+
     .interface-indicator {
         font-size: 10px;
         padding: 3px 6px;
@@ -560,7 +590,6 @@
 .lts-header {
     width: 60px !important;
     text-align: center !important;
-    font-weight: bold !important;
     font-size: 12px !important;
     background: #f8f9fa !important;
     padding: 8px 4px !important;
@@ -570,7 +599,6 @@
 
 [theme='blue-theme'] .lts-header {
     background: #ffffff !important;
-    color: #000000 !important;
 }
 
 /* Botões LTS na tabela */
@@ -613,7 +641,7 @@ td:has(.js-lts-button-widget) {
         font-size: 10px !important;
     }
 
-    
+
     .lts-column-cell,
     td:has(.js-lts-button),
     td:has(.js-lts-button-widget) {
