@@ -30,6 +30,7 @@ This module enhances incident management by providing insights into recurring is
 <img width="1040" height="684" alt="image" src="https://github.com/user-attachments/assets/82d95188-0b8f-4870-ad3b-212fc1ae5a54" />
 <img width="1039" height="774" alt="image" src="https://github.com/user-attachments/assets/8a1072e2-4c26-44a6-9501-b35a93edf52c" />
 <img width="1040" height="817" alt="image" src="https://github.com/user-attachments/assets/78f970c4-4720-4799-85b9-3dd9b91063f3" />
+<img width="2080" height="1246" alt="image" src="https://github.com/user-attachments/assets/024c65cd-2771-4a86-9995-da0722695e3e" />
 <img width="1043" height="688" alt="image" src="https://github.com/user-attachments/assets/66ac6412-525d-4d14-bcad-bd6409fb6c65" />
 
 
