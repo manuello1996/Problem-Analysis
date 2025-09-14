@@ -488,7 +488,7 @@ $time_patterns_div->addItem($patterns_container);
 $tabs->addTab('patterns', _('Time Patterns'), $time_patterns_div);
 
 
-// TAB 5: Graphs - Fixed time period (1 hour before incident, and 12h before incident to now)
+// TAB 5: Graphs - Fixed time period (1 hour before incident, from incident to now)
 $graphs_div = new CDiv();
 
 if ($items && isset($event['clock'])) {

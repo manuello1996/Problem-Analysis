@@ -388,10 +388,21 @@ class CControllerAnalistProblemPopup extends CController {
         ]);
 
         // Get dashboard count
-        $host['dashboard_count'] = API::HostDashboard()->get([
-            'countOutput' => true,
-            'hostids' => $host['hostid']
-        ]);
+        // Default: no dashboards / feature not available
+        $host['dashboard_count'] = 0;
+
+        // Only call if the static method exists (avoids fatal "undefined method")
+        if (method_exists(API::class, 'HostDashboard')) {
+            try {
+                $host['dashboard_count'] = API::HostDashboard()->get([
+                    'countOutput' => true,
+                    'hostids'     => $host['hostid']
+                ]);
+            }
+            catch (Exception $e) {
+                // Keep default 0 on any API failure.
+            }
+        }
 
         $host['item_count'] = $db_items_count;
         $host['graph_count'] = $host['graphs'];
